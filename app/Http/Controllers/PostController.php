@@ -59,7 +59,9 @@ class PostController extends Controller
     {
       return redirect()->route("posts.index");
     }
-
+    public function update($id){
+        return redirect()->route("posts.index");
+    }
     public function edit($id){
 
         $post =  [

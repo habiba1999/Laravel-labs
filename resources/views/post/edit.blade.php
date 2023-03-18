@@ -4,9 +4,9 @@
 @section('title') Update @endsection
 
 @section('content')
-<form class="mt-5" action="{{route("posts.store", $post['id'])}}" method="post">
+<form class="mt-5" action="{{route("posts.update", $post['id'])}}" method="post">
     @csrf
-    {{-- @method("put") --}}
+     @method("put") 
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
       <input type="text" name="title" class="form-control" id="title" value="{{$post['title']}}">

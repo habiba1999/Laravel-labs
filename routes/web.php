@@ -27,3 +27,5 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')
 Route::post('/posts', [PostController::class,"store"])->name("posts.store");
 
 Route::get('/posts/edit/{post}', [PostController::class, 'edit'])->name('posts.edit');
+
+Route::put('/posts/{post}',[PostController::class , 'update'])->name('posts.update');
