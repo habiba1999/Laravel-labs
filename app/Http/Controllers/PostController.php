@@ -26,32 +26,32 @@ class PostController extends Controller
     {
         $post = Post::where('id', $id)->first();
         $comments = $post->comments;
-        //dd($comments);
+        //dd($post);
         return view('post.show',["comments"=>$comments,'post' => $post]);
-//        dd($post);
-
-       // return view('post.show', ['post' => $post]);
     }
 
     public function create(){
         $users = User::all();
 
         return view('post.create', ['users' => $users]);
-        // return view('post.create');
+        
     }
 
     
     public function store(StorePostRequest $request)
     {
-        //dd($request,request());
-        
+        // dd($request);
+        $path = null;
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('posts', ['disk' => "public"]);
+        }
            //insert the form data in the database
            $post = Post::create([
             'title' =>  $request->title,
             'description' => $request->description,
-            'user_id' => $request->post_creator
+            'user_id' => $request->post_creator,
+            'image' => $path
         ]);
-
        //redirect to index route
        return to_route('posts.index');
     }
@@ -65,14 +65,23 @@ class PostController extends Controller
 
     public function update(Request $request, $id){
         $post = post::find($id);
+        if ($request->hasFile("image")) {
+            if ($post->image_path) //check if not null (no image)
+                Storage::disk("public")->delete($post->image_path);
+            $path = $request->file('image')->store('posts', ['disk' => "public"]);
+        } else {
+            $path = $post->image_path;
+        }
+ 
+        
         $post->update(
             [
                 //column name -> came data of name of input
-               'title'=> request()->title,
-               'description'=> request()->description,
+               'title'=> $request->title,
+               'description'=> $request->description,
                'user_id' => $request->post_creator,
-               'slug' => Str::of(request()->title)->slug('-') //for update slug when update title
-            
+               'slug' => Str::of($request->title)->slug('-'), //for update slug when update title
+               'image' => $path
             ]);
         return to_route('posts.index')->with('success', 'A Post is Updated Successfully!');
     }

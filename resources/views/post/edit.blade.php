@@ -4,7 +4,7 @@
 @section('title') Update @endsection
 
 @section('content')
-<form class="mt-5" action="{{route("posts.update", $post['id'])}}" method="post">
+<form class="mt-5" action="{{route("posts.update", $post['id'])}}" method="post" novalidate enctype="multipart/form-data">
     @csrf
      @method("put") 
      <div class="mb-4">
@@ -33,7 +33,19 @@
           @endforeach
       </select>
   </div>
-  
+  <div class="col-md-6 mb-3">
+    <label for="formFile" class="form-label">Post Image</label>
+    <input class="form-control" type="file" id="formFile" name="image">
+</div>
+@if ($errors->any())
+<div class="alert alert-danger pb-0 ">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
     <button type="submit" class="btn btn-primary">Update</button>
   </form>
 @endsection

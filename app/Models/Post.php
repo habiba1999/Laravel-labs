@@ -14,7 +14,8 @@ class Post extends Model
         'title',
         'description',
         'user_id',
-        'slug'
+        'slug',
+        'image'
     ];
     public function user(){
         return $this->belongsTo(related:User::class);

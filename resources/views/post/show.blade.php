@@ -11,6 +11,10 @@
             <div class="card-body">
                 <h5 class="card-title fs-4">Title: {{$post->title}}</h5>
                 <span class="card-title fs-4">Description: </span><span class="fs-5">{{$post->description}}</span></br>
+                  @if ($post->image)
+                <h4>Image: </h4>
+                <img src="{{Storage::url($post->image)}}"  alt="{{$post->image}}" class="img-fluid rounded mx-auto">
+                @endif
             </div>
     </div>
 
