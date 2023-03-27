@@ -13,4 +13,11 @@ class CommentController extends Controller
         $post->comments()->create($request->all());
         return redirect()->back();
     }
+
+    public function destroy($id){
+        $comment = Comment::where('id', $id)->first();
+        // dd($id);
+        $comment->delete();
+        return redirect()->back();
+    }
 }

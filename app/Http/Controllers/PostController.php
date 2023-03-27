@@ -16,7 +16,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        
+        //dd(request());
         $allPosts = Post::paginate(10); //select * from posts
         //dd($allPosts);
         return view('post.index', ['posts' => $allPosts]);
@@ -27,10 +27,10 @@ class PostController extends Controller
         $post = Post::where('id', $id)->first();
         $comments = $post->comments;
         //dd($comments);
-        return view('post.show',["comments"=>$comments],['post' => $post]);
+        return view('post.show',["comments"=>$comments,'post' => $post]);
 //        dd($post);
 
-        return view('post.show', ['post' => $post]);
+       // return view('post.show', ['post' => $post]);
     }
 
     public function create(){
@@ -41,19 +41,16 @@ class PostController extends Controller
     }
 
     
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $title = request()->title;
-        $description = request()->description;
-        $postCreator = request()->post_creator;
-
+        //dd($request,request());
+        
            //insert the form data in the database
-           Post::create([
-            'title' => $title,
-            'description' => $description,
-            'user_id' => $postCreator,
+           $post = Post::create([
+            'title' =>  $request->title,
+            'description' => $request->description,
+            'user_id' => $request->post_creator
         ]);
-
 
        //redirect to index route
        return to_route('posts.index');
@@ -74,6 +71,7 @@ class PostController extends Controller
                'title'=> request()->title,
                'description'=> request()->description,
                'user_id' => $request->post_creator,
+               'slug' => Str::of(request()->title)->slug('-') //for update slug when update title
             
             ]);
         return to_route('posts.index')->with('success', 'A Post is Updated Successfully!');
@@ -84,5 +82,11 @@ class PostController extends Controller
         $post = Post::where('id', $id)->first();
         $post->delete();
         return redirect()->route('posts.index', $post['user_id'] );
+    }
+
+    public function removeOldPosts()
+    {
+        PruneOldPostsJob::dispatch();
+        return to_route('posts.index')->with('success', 'An old Post is deleted Successfully!');
     }
 }

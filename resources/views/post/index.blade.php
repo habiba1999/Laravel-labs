@@ -11,10 +11,11 @@
     <table class="table mt-4">
         <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Posted By</th>
-            <th scope="col">Created At</th>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Title</th>
+            <th scope="col" class="text-center">Slug</th>
+            <th scope="col" class="text-center">Posted By</th>
+            <th scope="col" class="text-center">Created At</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -22,14 +23,15 @@
 
         @foreach($posts as $post)
             <tr>
-                <td>{{$post->id}}</td>
-                <td>{{$post->title}}</td>
+                <td class="text-center">{{$post->id}}</td>
+                <td class="text-center">{{$post->title}}</td>
+                <td class="text-center">{{$post->slug}}</td>
                 @if ($post->user)
-                    <td>{{$post->user->name}}</td>
+                    <td class="text-center">{{$post->user->name}}</td>
                 @else
-                    <td>Not Found</td>
+                    <td class="text-center">Not Found</td>
                 @endif
-                <td>{{$post->created_at->format('Y-m-d')}}</td>
+                <td class="text-center">{{$post->created_at->format('Y-m-d')}}</td>
                 <td class="d-flex gap-3">
                     <a href="{{route('posts.show', $post->id)}}" class="btn btn-info">View</a>
                     <a href="{{route('posts.edit',  $post->id)}}" class="btn btn-primary">Edit</a>
