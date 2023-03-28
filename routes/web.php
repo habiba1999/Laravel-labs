@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -44,3 +46,10 @@ Route::group(['middleware' =>['auth']], function(){
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+Route::get('/auth/{provider}/redirect',[LoginController::class, 'redirect'])->name('Login');
+Route::get('/auth/{provider}/callback',[LoginController::class, 'callback']);
+
